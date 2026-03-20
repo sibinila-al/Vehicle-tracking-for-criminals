@@ -2,3 +2,9 @@ huggingface-hub
 paddleocr
 paddlepaddle
 db-sqlite3
+flask
+opencv-python
+ultralytics
+mysql-connector-python
+flask-login
+werkzeug

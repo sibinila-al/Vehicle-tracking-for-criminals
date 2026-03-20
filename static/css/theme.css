@@ -1,0 +1,112 @@
+:root {
+    --bg: #0a0a12;
+    --surface: #111124;
+    --surface-2: #1a1645;
+    --primary: #8b5cf6;
+    --primary-2: #7c3aed;
+    --accent: #a855f7;
+    --text: #e7e7ff;
+    --muted: #b9b9d5;
+    --border: rgba(135, 75, 255, .35);
+}
+
+body {
+    background: linear-gradient(130deg, #06060e 10%, #110f2d 55%, #0b0b17 100%);
+    color: var(--text);
+    min-height: 100vh;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    transition: background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.navbar, .card, .modal-content {
+    background: var(--surface);
+    border-color: var(--border);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+}
+
+.navbar-brand, .nav-link {
+    color: var(--text) !important;
+    text-shadow: 0 0 10px rgba(139, 92, 246, .45);
+}
+
+.nav-link.active, .nav-link:hover {
+    color: var(--primary) !important;
+}
+
+.card-header {
+    background: linear-gradient(90deg, rgba(139, 92, 246, .25), rgba(124, 58, 237, .1));
+    border-bottom: 1px solid var(--border);
+}
+
+.card-title {
+    color: #f3f2ff;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-color: #8c6dff;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(140, 61, 255, .45);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #a16cff, #be79ff);
+    border-color: #a855f7;
+}
+
+.btn-secondary {
+    background: #2d2a53;
+    border-color: #3a3677;
+    color: var(--text);
+}
+
+.table {
+    color: var(--text);
+    border-color: var(--border);
+    background: rgba(18, 18, 50, .72);
+}
+
+.table thead th {
+    border-bottom: 2px solid var(--border);
+    color: #d8cfff;
+}
+
+.table tbody td {
+    border-bottom: 1px solid rgba(138, 96, 241, .3);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background: rgba(24, 24, 66, .56);
+}
+
+.form-control {
+    background: #0f0e2a;
+    color: var(--text);
+    border: 1px solid rgba(126, 84, 237, .7);
+    box-shadow: inset 0 0 10px rgba(99, 46, 243, .45);
+}
+
+.modal-content {
+    border: 1px solid rgba(139, 92, 246, .6);
+}
+
+.alert {
+    background: rgba(88, 67, 180, .93);
+    border-color: rgba(192, 135, 255, .85);
+    color: white;
+}
+
+.shadow {
+    box-shadow: 0 2px 12px rgba(95, 55, 206, .45) !important;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    display: none;
+}

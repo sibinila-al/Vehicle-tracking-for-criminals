@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectX - Profile Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #0f0f0f, #1a1a1a); }
+        .navbar { background: rgba(20, 20, 20, 0.9) !important; }
+        .card { background: rgba(30, 30, 30, 0.9); border: 1px solid #333; }
+        .btn-futuristic { background: linear-gradient(45deg, #007bff, #00d4ff); border: none; color: white; }
+        .btn-futuristic:hover { background: linear-gradient(45deg, #0056b3, #0099cc); }
+        .profile-header { text-align: center; padding: 30px; border-bottom: 1px solid #444; }
+        .profile-avatar { width: 120px; height: 120px; background: linear-gradient(45deg, #007bff, #00d4ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-size: 48px; font-weight: bold; }
+        .form-section { margin-bottom: 30px; padding: 20px; background: rgba(50, 50, 50, 0.5); border-radius: 10px; }
+        .form-section h5 { color: #00d4ff; border-bottom: 2px solid #00d4ff; padding-bottom: 10px; }
+        .alert-toast { position: fixed; top: 20px; right: 20px; z-index: 1050; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand text-light fw-bold">ProjectX</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/live_monitoring">Live Monitoring</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/profile">Profile Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin">Admin Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Alert Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info alert-toast alert-dismissible fade show" role="alert">
+                {{ messages[0] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container mt-4">
+        <!-- Profile Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">{{ current_user.username[0].upper() }}</div>
+                        <h2 class="mt-3 text-light">{{ current_user.username }}</h2>
+                        <p class="text-muted">Account ID: {{ current_user.id }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Information Section -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Account Information</h5>
+                    </div>
+                    <div class="card-body form-section">
+                        <p><strong>Username:</strong> <span class="text-info">{{ current_user.username }}</span></p>
+                        <p><strong>Account ID:</strong> <span class="text-info">{{ current_user.id }}</span></p>
+                        <p><strong>Status:</strong> <span class="badge bg-success">Active</span></p>
+                        <hr>
+                        <small class="text-muted">Account created and fully operational</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Quick Stats</h5>
+                    </div>
+                    <div class="card-body form-section">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <h5 class="text-info">--</h5>
+                                <small>Detections</small>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="text-info">--</h5>
+                                <small>Sessions</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Security Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-section">
+                            <h6>Change Password</h6>
+                            <form method="POST" action="/change_password">
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword" name="new_password" 
+                                           pattern="^.{6}$" title="Password must be exactly 6 characters" required>
+                                    <small class="text-muted">Must be exactly 6 characters</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirm_password" 
+                                           pattern="^.{6}$" title="Password must be exactly 6 characters" required>
+                                </div>
+                                <button type="submit" class="btn btn-futuristic">Update Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preferences Section -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Notification Preferences</h5>
+                    </div>
+                    <div class="card-body form-section">
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                            <label class="form-check-label" for="emailNotif">Email Notifications</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="plateNotif" checked>
+                            <label class="form-check-label" for="plateNotif">License Plate Alerts</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="systemNotif" checked>
+                            <label class="form-check-label" for="systemNotif">System Notifications</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Privacy Settings</h5>
+                    </div>
+                    <div class="card-body form-section">
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="dataCollection">
+                            <label class="form-check-label" for="dataCollection">Allow Data Collection</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="analytics">
+                            <label class="form-check-label" for="analytics">Allow Analytics</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="thirdParty">
+                            <label class="form-check-label" for="thirdParty">Third-party Sharing</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger bg-opacity-25">
+                        <h5 class="mb-0 text-danger">Danger Zone</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Once you delete your account, there is no going back. Please be certain.</p>
+                        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                    <p><strong>{{ current_user.username }}</strong> will be permanently deleted.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form method="POST" action="/delete_account" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-hide alerts after 5 seconds
+        const alerts = document.querySelectorAll('.alert-toast');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
